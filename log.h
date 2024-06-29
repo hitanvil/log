@@ -1,5 +1,7 @@
 #pragma once
 
+#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
+
 #include <pthread.h>
 #include <chrono>
 #include <iostream>
@@ -22,6 +24,8 @@
  * 
  * @param console_level level for console output
  * @param file_level level for daily file output
+ * @param flush_level level to flush stored log
  */
 void log_init(spdlog::level::level_enum console_level,
-              spdlog::level::level_enum file_level);
+              spdlog::level::level_enum file_level,
+              spdlog::level::level_enum flush_level);
