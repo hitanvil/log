@@ -10,26 +10,18 @@
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
 
-void spdlog_init(spdlog::level::level_enum console_level,
-                 spdlog::level::level_enum file_level) {
-    auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-    console_sink->set_level(console_level);
-    console_sink->set_pattern("[%Y-%m-%d %H:%M:%S %z] [%^%L%$] %@ %v");
+#define LOG_TRACE(x) SPDLOG_TRACE(x)
+#define LOG_DBG(x) SPDLOG_DEBUG(x)
+#define LOG_INFO(x) SPDLOG_INFO(x)
+#define LOG_WARN(x) SPDLOG_WARN(x)
+#define LOG_ERR(x) SPDLOG_ERROR(x)
+#define LOG_CRITICAL(x) SPDLOG_CRITICAL(x)
 
-    auto file_sink = std::make_shared<spdlog::sinks::daily_file_sink_mt>(
-        "logs/daily.txt", 2, 30);
-    file_sink->set_level(file_level);
-    file_sink->set_pattern("[%Y-%m-%d %H:%M:%S %z] [%^%L%$] %@ %v");
-
-    spdlog::sinks_init_list sink_list = {file_sink, console_sink};
-
-    spdlog::logger logger("multi_sink", sink_list.begin(), sink_list.end());
-    logger.set_level(spdlog::level::debug);
-
-    // or you can even set multi_sink logger as default logger
-    spdlog::set_default_logger(std::make_shared<spdlog::logger>(
-        "multi_sink", spdlog::sinks_init_list({console_sink, file_sink})));
-
-    spdlog::flush_on(spdlog::level::warn);
-    spdlog::flush_every(std::chrono::seconds(3));
-}
+/**
+ * @brief initial spdlog
+ * 
+ * @param console_level level for console output
+ * @param file_level level for daily file output
+ */
+void log_init(spdlog::level::level_enum console_level,
+              spdlog::level::level_enum file_level);
